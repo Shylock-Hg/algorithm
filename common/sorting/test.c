@@ -1,5 +1,7 @@
 #include "sort_insert.h"
 
+#include "sort_select.h"
+
 #include <stdio.h>
 
 #define println_array(array,len)  do{\
@@ -17,7 +19,8 @@ int main(int argc, char * argv[]){
 	printf("origin:\n");
 	println_array(array0,sizeof(array0)/sizeof(array0[0]));
 	
-	sort_insert(array0,sizeof(array0)/sizeof(array0[0]));
+	//sort_insert(array0,sizeof(array0)/sizeof(array0[0]));
+	sort_select(array0,sizeof(array0)/sizeof(array0[0]));
 	
 	printf("sorted:\n");
 	println_array(array0,sizeof(array0)/sizeof(array0[0]));
