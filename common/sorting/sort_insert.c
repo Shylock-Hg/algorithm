@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stddef.h>
 
+/*! \brief swap two item value in array
+ *  \param a pointer to item in array
+ *  \parma b pointer to item in array
+ * */
 static inline void swap_item(int * a, int * b){
 	int temp = *a;
 	*a = *b;
