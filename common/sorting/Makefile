@@ -1,30 +1,23 @@
 CC = gcc
 CCFLAGS = -std=c99 -Wall
 BUILD = ./build
-OBJECTS = $(BUILD)/test.o $(BUILD)/sort_insert.o $(BUILD)/sort_common.o
+OBJECTS = $(BUILD)/test.o $(BUILD)/sort_insert.o $(BUILD)/sort_common.o $(BUILD)/sort_select.o
 
-vpath %.o ./build # add objects directory
+vpath %.o $(BUILD) # add objects directory
 
 .PHONY : output all clean
 
+all : $(BUILD)/test
 
-all : test
+$(BUILD)/test : $(OBJECTS) output
+	$(CC) $(CCFLAGS) -o $@ $(OBJECTS)
 
-test : $(OBJECTS) output
-	$(CC) $(CCFLAGS) -o $(BUILD)/$@ $(OBJECTS)
-
-test.o : test.c output
-	$(CC) $(CCFLAGS) -c $< -o $(BUILD)/$@
-
-sort_insert.o : sort_insert.c output
-	$(CC) $(CCFLAGS) -c $< -o $(BUILD)/$@
-
-sort_common.o : sort_common.c output
-	$(CC) $(CCFLAGS) -c $< -o $(BUILD)/$@
+$(BUILD)/%.o : %.c output
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 output :
-	mkdir -p ./build
+	mkdir -p $(BUILD)
 
-clean : output
-	rm $(BUILD)/test $(OBJECTS)
+clean :
+	rm -rf $(BUILD)
 

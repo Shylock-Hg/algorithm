@@ -19,7 +19,7 @@ void sort_select(int array[], size_t len){
 			}
 		}
 		if(jMin != i){  //!< swap min value to left
-			swap_item(array[i], array[jMin]);
+			swap_item(array+i, array+jMin);
 		}
 	}
 }
