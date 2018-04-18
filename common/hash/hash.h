@@ -21,6 +21,11 @@ typedef struct hash {
 	struct hash * next;
 } hash_t;
 
+typedef struct hash_class {
+	struct hash * list;  //!< head of list
+	struct hash * array[];  //!< head of array
+} hash_class_t;
+
 /*! \brief map c-string to integer value
  *  \param str c-string
  *  \param HASH_TAB_SIZE hash table count
@@ -30,43 +35,45 @@ uintptr_t hash(const char * str, const size_t HASH_TAB_SIZE);
 
 /*! \brief create hash-list and hash-table
  *  \param HASH_TAB_SIZE hash table count
- *  \retval hash list head
+ *  \retval hash instance
  * */
-struct hash * hash_new(const size_t HASH_TAB_SIZE);
+struct hash_class hash_new(const size_t HASH_TAB_SIZE);
 
 /*! \brief release hash-list and hash-table
- *  \param head head of hash-list
+ *  \param instance hash instance
  * */
-void hash_release(struct hash * head);
+void hash_release(struct hash_class * instance);
 
 /*! \brief append a new hash to list and insert to table
- *  \param head head of hash-list
+ *  \param instance hash instance
  *  \param key keywords string 
  *  \param value 
  * */
-void hash_append(struct hash * head, const char * key, const void * value);
+void hash_append(struct hash_class * instance , const char * key, const void * value);
 
 /*! \brief pop hash from lish and delete from table
- *  \param head head of hash-list
+ *  \param instance hash instance
  * */
-void hash_pop(struct hash * head);
+void hash_pop(struct hash_class * instance);
 
 /*! \brief lookup hash by keywords string
- *  \param head head of hash-list
+ *  \param instance hash instance
  *  \param key keywords string
  *  \retval lookuped hash pointer , NULL for not lookup
  * */
-struct hash * hash_lookup(const struct hash * head, const char * key);
+struct hash * hash_lookup(struct hash_class * instance, const char * key);
 
-/*! \brief printf hash-table to c-array text in file*/
-void hash_dump(const struct hash * head);
+/*! \brief printf hash-table to c-array text in file
+ *  \param instance hash instance
+ * */
+void hash_dump(struct hash_class * instance);
 
 /*! \brief load hash-table frome file append to list and insert to table
- *  \param head head of hash-list
+ *  \param instance hash instance
  *  \param f file loadded
  *  \retval 0==ok,-1==err
  * */
-int hash_load(struct hash * head, FILE * f);
+int hash_load(struct hash_class * instance, FILE * f);
 
 #ifdef __cplusplus
 	}
