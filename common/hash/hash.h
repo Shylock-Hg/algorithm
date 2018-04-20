@@ -50,13 +50,13 @@ void hash_release(struct hash_class * instance);
  *  \param key keywords string 
  *  \param value 
  * */
-void hash_push(struct hash_class instance , const char * key, const void * value,
+void hash_push(struct hash_class * instance , const char * key, const void * value,
 		size_t value_size);
 
 /*! \brief pop hash from lish and delete from table
  *  \param instance hash instance
  * */
-void hash_pop(struct hash_class instance);
+void hash_pop(struct hash_class * instance);
 
 /*! \brief lookup hash by keywords string
  *  \param instance hash instance

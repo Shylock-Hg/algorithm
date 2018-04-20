@@ -74,6 +74,7 @@ void hash_release(struct hash_class * instance){
 	//!< free array
 	free(instance->array);
 	instance->array = NULL;
+
 	instance->hash_tab_size = 0;
 }
 
@@ -82,34 +83,39 @@ void hash_release(struct hash_class * instance){
  *  \param key keywords string 
  *  \param value 
  * */
-void hash_push(struct hash_class instance , const char * key, const void * value,
+void hash_push(struct hash_class * instance , const char * key, const void * value,
 		const size_t value_size){
-	struct hash * pre = instance.list;
-	while(NULL != instance.list){
-		pre = instance.list;
-		instance.list = instance.list->next;
+	struct hash * pre = instance->list;
+	struct hash * it = instance->list;
+	while(NULL != it){
+		pre = it;
+		it = it->next;
 	}
 
 	//!< tail list item
-	instance.list = malloc(sizeof(struct hash));
+	it = malloc(sizeof(struct hash));
 
-	instance.list->key = malloc(strlen(key)+1);
-	memcpy(instance.list->key,key,strlen(key)+1);
+	it->key = malloc(strlen(key)+1);
+	memcpy(it->key,key,strlen(key)+1);
 
-	instance.list->value = malloc(value_size);
-	memcpy(instance.list->value,value,value_size);
+	it->value = malloc(value_size);
+	memcpy(it->value,value,value_size);
 
-	instance.list->next = NULL;
+	it->next = NULL;
 
 	if(NULL != pre){
-		pre->next = instance.list;  //!< add to list chain
+		pre->next = it;  //!< add to list chain
+	}else{
+		//!< empty list
+		instance->list = it;  //!< add to list chain(head)
+		printf("empty list\n");
 	}
 
 	//!< hash table
-	uintptr_t index = hash(key,instance.hash_tab_size);
+	uintptr_t index = hash(key,instance->hash_tab_size);
 	printf("[info]:hash=`%lu`\n",index);
-	if(NULL == instance.array[index]){
-		instance.array[index] = instance.list;
+	if(NULL == instance->array[index]){
+		instance->array[index] = it;
 	}else{
 		printf("[err]:hash conflict!\n");
 		//!< TODO handle hash conflict!!!
@@ -119,24 +125,30 @@ void hash_push(struct hash_class instance , const char * key, const void * value
 /*! \brief pop hash from lish and delete from table
  *  \param instance hash instance
  * */
-void hash_pop(struct hash_class instance){
-	struct hash * pre = instance.list;
-	if(NULL == instance.list)
+void hash_pop(struct hash_class * instance){
+	struct hash * pre = instance->list;
+	struct hash * it  = instance->list;
+	if(NULL == instance->list){
 		return;  //!< empty list
-	while(NULL != instance.list->next){
-		pre = instance.list;
-		instance.list = instance.list->next;
 	}
-	
+	while(NULL != it->next){
+		pre = it;
+		it = it->next;
+	}
+
+	if(it == instance->list){
+		instance->list = NULL;  //!< empty list
+	}
+
 	//!< hash table
-	uintptr_t index = hash(instance.list->key,instance.hash_tab_size);
-	instance.array[index] = NULL;
+	uintptr_t index = hash(it->key,instance->hash_tab_size);
+	instance->array[index] = NULL;
 
 	//!< tail list item
 	pre->next = NULL;
-	free(instance.list->value);
-	free(instance.list->key);
-	free(instance.list);
+	free(it->value);
+	free(it->key);
+	free(it);
 }
 
 /*! \brief lookup hash by keywords string
@@ -145,6 +157,9 @@ void hash_pop(struct hash_class instance){
  *  \retval lookuped hash pointer , NULL for don't lookup 
  * */
 struct hash * hash_lookup(struct hash_class instance, const char * key){
+	if(NULL == instance.array)
+		return NULL;
+
 	uintptr_t index = hash(key,instance.hash_tab_size);
 	return instance.array[index];
 }
