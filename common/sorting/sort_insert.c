@@ -8,14 +8,14 @@
  *  \param len lenght of numbers to sort
  *  \note stable
  * */
-void sort_insert(int array[], size_t len){
+void sort_insert(array_t array){
 	size_t j = 0;
-	for(size_t i = 1; i < len; i++){ //!< i-->[1,len-1]
+	for(size_t i = 1; i < array.len; i++){ //!< i-->[1,len-1]
 		j = i;
 		for(j=i; j > 0; j--){  //!< j-->[i,1]
-			if( array[j-1] > array[j])
+			if( array.value[j-1] > array.value[j])
 				//! insert to 
-				swap_item(array+j-1,array+j);
+				swap_item(array.value+j-1,array.value+j);
 		}
 	}
 }

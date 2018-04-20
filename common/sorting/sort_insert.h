@@ -6,8 +6,9 @@
 #endif
 
 #include <stddef.h>
+#include "sort_common.h"
 
-void sort_insert(int array[], size_t len);
+void sort_insert(array_t array);
 
 #ifdef __cplusplus
 	}
