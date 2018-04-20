@@ -1,7 +1,8 @@
 CC = gcc
 CCFLAGS = -std=c99 -Wall
 BUILD = ./build
-OBJECTS = $(BUILD)/test.o $(BUILD)/sort_insert.o $(BUILD)/sort_common.o $(BUILD)/sort_select.o
+OBJECTS = $(BUILD)/test.o $(BUILD)/sort_insert.o $(BUILD)/sort_common.o \
+	  $(BUILD)/sort_select.o $(BUILD)/sort_merge.o
 
 vpath %.o $(BUILD) # add objects directory
 
