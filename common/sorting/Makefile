@@ -1,10 +1,10 @@
 CC = gcc
-CCFLAGS = -std=c99 -Wall
+CCFLAGS = -std=c99 -Wall -g
 BUILD = ./build
 OBJECTS = $(BUILD)/test.o $(BUILD)/sort_insert.o $(BUILD)/sort_common.o \
-	  $(BUILD)/sort_select.o $(BUILD)/sort_merge.o
+	  $(BUILD)/sort_select.o $(BUILD)/sort_merge.o $(BUILD)/sort_quick.o
 
-vpath %.o $(BUILD) # add objects directory
+#vpath %.o $(BUILD) # add objects directory
 
 .PHONY : output all clean
 
