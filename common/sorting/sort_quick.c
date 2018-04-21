@@ -12,10 +12,11 @@
 static int pivot(array_t array, int lo, int hi){
 	int pivot = array.value[hi];
 	int i = lo;
-	for(int j=lo; j<hi; j++){  //!< lo-->hi
+	for(int j=lo; j<hi; j++){  //!< j-->[lo,hi)
 		if(array.value[j] < pivot){
-			swap_item(array.value+i,array.value+j);  //!< insert smaller to start
-			i++;
+			//< swap smaller to start
+			swap_item(array.value+i,array.value+j);  
+			i++;  //!< point to last unswap item
 		}
 	}
 	swap_item(array.value+i,array.value+hi);  //!< swap pivot
@@ -25,7 +26,9 @@ static int pivot(array_t array, int lo, int hi){
 static void sort_quick_origin(array_t array, int lo, int hi){
 	if(lo < hi){  //!< divide by pivot until one element
 		int p = pivot(array,lo,hi);
-		sort_quick_origin(array,lo,p-1);
+
+		//< nonnegetive index will cause interger overflow
+		sort_quick_origin(array,lo,p-1);  
 		sort_quick_origin(array,p+1,hi);
 	}
 }

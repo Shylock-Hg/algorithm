@@ -20,7 +20,9 @@ static void merge(array_t array, size_t i_start, size_t i_mid, size_t i_end){
 	size_t i_right = i_mid;
 	size_t i_temp = i_start;
 
-	while(i_left < i_mid || i_right < i_end){  //!< merge and sort two sub-array to temp
+	//< merge and sort two sub-array to temp
+	//< sub[i_start,i_mid), sub[i_mid,i_end) --> partion[i_start,i_end)
+	while(i_left < i_mid || i_right < i_end){  
 		if(i_left == i_mid){
 			temp[i_temp] = array.value[i_right];
 			i_right++;
@@ -37,10 +39,11 @@ static void merge(array_t array, size_t i_start, size_t i_mid, size_t i_end){
 		i_temp++;
 	}
 
-	for(i_temp=i_start; i_temp<i_end; i_temp++){  //!< update origin sub-array
+	//< update origin partion-array[i_start,i_end)
+	for(i_temp=i_start; i_temp<i_end; i_temp++){  
 		array.value[i_temp] = temp[i_temp];
 	}
-	//memcpy(array.value+i_start,temp+i_start,i_end-i_start);
+	//memcpy(array.value+i_start,temp+i_start,i_end-i_start); error for bytes order
 }
 
 static void sort_merge_origin(array_t array, size_t i_start, size_t i_end){
