@@ -16,7 +16,7 @@
 
 /*! \brief simple merge sort algorithm implement
  *  \param array array to sorted
- *  \param len count of array items
+ *  \note time:O(nlogn),space:O(n),stable
  * */
 void sort_merge(array_t array);
 

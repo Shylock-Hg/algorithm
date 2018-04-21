@@ -8,6 +8,10 @@
 #include <stddef.h>
 #include "sort_common.h"
 
+/*  \brief simple implement of insert sort
+ *  \param array array to sorted
+ *  \note time:O(n2),space:O(1),stable
+ * */
 void sort_insert(array_t array);
 
 #ifdef __cplusplus
