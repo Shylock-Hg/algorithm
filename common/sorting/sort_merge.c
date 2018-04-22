@@ -47,14 +47,13 @@ static void merge(array_t array, size_t i_start, size_t i_mid, size_t i_end){
 }
 
 static void sort_merge_origin(array_t array, size_t i_start, size_t i_end){
-	if(1 == i_end - i_start)  //!< divide to one element
-		return;
-	
-	int i_mid = i_start + (i_end - i_start)/2;  //!< divide array
-	sort_merge_origin(array,i_start,i_mid);
-	sort_merge_origin(array,i_mid,i_end);
+	if(i_start < i_end-1){  //!< divide to one element
+		int i_mid = i_start + (i_end - i_start)/2;  //!< divide array
+		sort_merge_origin(array,i_start,i_mid);
+		sort_merge_origin(array,i_mid,i_end);
 
-	merge(array,i_start,i_mid,i_end);
+		merge(array,i_start,i_mid,i_end);
+	}
 }
 
 void sort_merge(array_t array){
