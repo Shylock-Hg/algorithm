@@ -116,6 +116,9 @@ void hash_push(struct hash_class * instance , const char * key, const void * val
 	printf("[info]:hash=`%lu`\n",index);
 	if(NULL == instance->array[index]){
 		instance->array[index] = it;
+	}else if(0 == strcmp(key,instance->array[index]->key)){
+		printf("[warn]:repeated key\n");
+		//!< TODO handle repeated define
 	}else{
 		printf("[err]:hash conflict!\n");
 		//!< TODO handle hash conflict!!!
