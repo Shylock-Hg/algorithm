@@ -22,7 +22,7 @@ typedef struct hash {
 } hash_t;
 
 typedef struct hash_class {
-	struct hash * list;  //!< head of list
+	//struct hash * list;  //!< head of list
 	struct hash ** array;  //!< head of array
 	size_t hash_tab_size;
 } hash_class_t;
@@ -56,7 +56,7 @@ void hash_push(struct hash_class * instance , const char * key, const void * val
 /*! \brief pop hash from lish and delete from table
  *  \param instance hash instance
  * */
-void hash_pop(struct hash_class * instance);
+//void hash_pop(struct hash_class * instance);
 
 /*! \brief lookup hash by keywords string
  *  \param instance hash instance

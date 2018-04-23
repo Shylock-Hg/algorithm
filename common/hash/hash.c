@@ -49,7 +49,7 @@ typedef struct hash_class {
 struct hash_class hash_new(const size_t HASH_TAB_SIZE){
 	struct hash_class instance = {0};
 
-	instance.list = NULL;  //!< list head
+	//instance.list = NULL;  //!< list head
 	instance.array = calloc(HASH_TAB_SIZE,sizeof(struct hash *));  //!< array head
 	instance.hash_tab_size = HASH_TAB_SIZE;
 
@@ -61,6 +61,7 @@ struct hash_class hash_new(const size_t HASH_TAB_SIZE){
  * */
 void hash_release(struct hash_class * instance){
 	//!< free list
+	/*
 	while(NULL != instance->list){
 		struct hash * temp = instance->list;
 		instance->list = instance->list->next;
@@ -69,12 +70,26 @@ void hash_release(struct hash_class * instance){
 		free(temp->key);
 		free(temp);
 	}
-	instance->list = NULL;
+	*/
+	//instance->list = NULL;
+	
+	//< free list
+	for(size_t i=0; i<instance->hash_tab_size; i++){
+		while(NULL != instance->array[i]){
+			struct hash * temp = instance->array[i];
+			instance->array[i] = instance->array[i]->next;
 
-	//!< free array
+			free(temp->value);
+			free(temp->key);
+			free(temp);
+		}
+	}
+
+	//< free array
 	free(instance->array);
 	instance->array = NULL;
 
+	//< reset hash table size
 	instance->hash_tab_size = 0;
 }
 
@@ -85,35 +100,23 @@ void hash_release(struct hash_class * instance){
  * */
 void hash_push(struct hash_class * instance , const char * key, const void * value,
 		const size_t value_size){
-	struct hash * pre = instance->list;
-	struct hash * it = instance->list;
-	while(NULL != it){
-		pre = it;
-		it = it->next;
-	}
-
-	//!< tail list item
-	it = malloc(sizeof(struct hash));
-
-	it->key = malloc(strlen(key)+1);
-	memcpy(it->key,key,strlen(key)+1);
-
-	it->value = malloc(value_size);
-	memcpy(it->value,value,value_size);
-
-	it->next = NULL;
-
-	if(NULL != pre){
-		pre->next = it;  //!< add to list chain
-	}else{
-		//!< empty list
-		instance->list = it;  //!< add to list chain(head)
-		printf("empty list\n");
-	}
-
-	//!< hash table
+	//< find hash table index
 	uintptr_t index = hash(key,instance->hash_tab_size);
-	printf("[info]:hash=`%lu`\n",index);
+
+	//< iterate list until pre point to tail
+	struct hash * pre  = instance->array[index];
+	struct hash * temp = instance->array[index];
+	while(NULL != temp){
+		if(0 == strcmp(temp->key,key)){
+			memcpy(temp->value,value,value_size);
+			printf("[info]:overwrite value of key-`%s`\n",key);
+			break;  //< already exist key
+		}
+		
+		pre  = temp;
+		temp = temp->next;
+	}
+	/*
 	if(NULL == instance->array[index]){
 		instance->array[index] = it;
 	}else if(0 == strcmp(key,instance->array[index]->key)){
@@ -123,11 +126,42 @@ void hash_push(struct hash_class * instance , const char * key, const void * val
 		printf("[err]:hash conflict!\n");
 		//!< TODO handle hash conflict!!!
 	}
+	*/
+
+	/*
+	struct hash * pre = instance->list;
+	struct hash * it = instance->list;
+	while(NULL != it){
+		pre = it;
+		it = it->next;
+	}
+	*/
+
+	//!< create new list item
+	temp = malloc(sizeof(struct hash));
+
+	temp->key = malloc(strlen(key)+1);
+	memcpy(temp->key,key,strlen(key)+1);
+
+	temp->value = malloc(value_size);
+	memcpy(temp->value,value,value_size);
+
+	temp->next = NULL;
+
+	//< add new item to list
+	if(NULL != pre){
+		pre->next = temp;  //!< add to list chain
+	}else{
+		//!< empty list
+		instance->array[index] = temp;  //!< add to list chain(head)
+		printf("empty list\n");
+	}
 }
 
 /*! \brief pop hash from lish and delete from table
  *  \param instance hash instance
  * */
+/*
 void hash_pop(struct hash_class * instance){
 	struct hash * pre = instance->list;
 	struct hash * it  = instance->list;
@@ -153,6 +187,7 @@ void hash_pop(struct hash_class * instance){
 	free(it->key);
 	free(it);
 }
+*/
 
 /*! \brief lookup hash by keywords string
  *  \param instance hash instance
@@ -164,7 +199,14 @@ struct hash * hash_lookup(struct hash_class instance, const char * key){
 		return NULL;
 
 	uintptr_t index = hash(key,instance.hash_tab_size);
-	return instance.array[index];
+
+	while(NULL != instance.array[index]){
+		if(0 == strcmp(instance.array[index]->key,key))
+			return instance.array[index];
+		instance.array[index] = instance.array[index]->next;
+	}
+	
+	return NULL;
 }
 
 /*! \brief dump hash table in binary

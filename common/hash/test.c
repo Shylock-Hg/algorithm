@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define HASH_TAB_SIZE 100
+#define HASH_TAB_SIZE 2
 
 int main(int argc, char * argv[]){
 	char key[200] = {0};

@@ -1,5 +1,5 @@
 OBJECTS = test.o hash.o
-CFLAGS = -std=c99 -Wall
+CFLAGS = -g -std=c99 -Wall 
 
 .PHONY: all clean
 
