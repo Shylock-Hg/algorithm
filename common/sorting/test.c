@@ -2,6 +2,7 @@
 #include "sort_select.h"
 #include "sort_merge.h"
 #include "sort_quick.h"
+#include "sort_heap.h"
 
 #include <stdio.h>
 
@@ -21,10 +22,11 @@ int main(int argc, char * argv[]){
 	printf("origin:\n");
 	println_array(array);
 	
-	sort_insert(array);
+	//sort_insert(array);
 	//sort_select(array);
 	//sort_merge(array);
 	//sort_quick(array);
+	sort_heap(array);
 	
 	printf("sorted:\n");
 	println_array(array);
