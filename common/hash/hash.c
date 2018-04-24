@@ -42,10 +42,6 @@ typedef struct hash_class {
 } hash_class_t;
 */
 
-/*! \brief create hash-list and hash-table
- *  \param HASH_TAB_SIZE hash table count
- *  \retval hash instance
- * */
 struct hash_class * hash_new(const size_t HASH_TAB_SIZE){
 	//< create hash instance
 	struct hash_class * instance = malloc(sizeof(struct hash_class));
@@ -57,9 +53,6 @@ struct hash_class * hash_new(const size_t HASH_TAB_SIZE){
 	return instance;
 }
 
-/*! \brief release hash-list and hash-table
- *  \param instance hash instance
- * */
 void hash_release(struct hash_class * instance){
 	if(NULL == instance)
 		return;
@@ -99,11 +92,6 @@ void hash_release(struct hash_class * instance){
 	free(instance);
 }
 
-/*! \brief append a new hash to list and insert to table
- *  \param instance hash instance
- *  \param key keywords string 
- *  \param value 
- * */
 void hash_insert(const struct hash_class * const instance , const char * key, const void * value,
 		const size_t value_size){
 	if(NULL == instance)
@@ -118,7 +106,7 @@ void hash_insert(const struct hash_class * const instance , const char * key, co
 		if(0 == strcmp(temp->key,key)){
 			memcpy(temp->value,value,value_size);
 			printf("[info]:overwrite value of key-`%s`\n",key);
-			break;  //< already exist key
+			return;  //< already exist key
 		}
 		
 		pre  = temp;
@@ -166,9 +154,33 @@ void hash_insert(const struct hash_class * const instance , const char * key, co
 	}
 }
 
-/*! \brief pop hash from lish and delete from table
- *  \param instance hash instance
- * */
+void hash_delete(const struct hash_class * const instance, const char * key){
+	if(NULL == instance)
+		return;
+	//< get index of key string
+	uintptr_t index = hash(key,instance->hash_tab_size);
+
+	struct hash * pre  = instance->array[index];
+	struct hash * temp = instance->array[index];
+	while(NULL != temp){
+		if(0 == strcmp(temp->key,key)){
+			printf("[info]:delete key `%s`\n",temp->key);
+			if(instance->array[index] == temp){  //!< head
+				instance->array[index] = temp->next;
+			}else{
+				pre->next = temp->next;
+			}
+
+			free(temp->value);
+			free(temp->key);
+			free(temp);
+			return;
+		}
+		pre  = temp;
+		temp = temp->next;
+	}
+}
+
 /*
 void hash_pop(struct hash_class * instance){
 	struct hash * pre = instance->list;
@@ -197,35 +209,24 @@ void hash_pop(struct hash_class * instance){
 }
 */
 
-/*! \brief lookup hash by keywords string
- *  \param instance hash instance
- *  \param key keywords string
- *  \retval lookuped hash pointer , NULL for don't lookup 
- * */
 struct hash * hash_lookup(const struct hash_class * const instance, const char * key){
 	if(NULL == instance || NULL == instance->array)
 		return NULL;
 
 	uintptr_t index = hash(key,instance->hash_tab_size);
 
-	while(NULL != instance->array[index]){
-		if(0 == strcmp(instance->array[index]->key,key))
-			return instance->array[index];
-		instance->array[index] = instance->array[index]->next;
+	struct hash * temp = instance->array[index];
+
+	while(NULL != temp){
+		if(0 == strcmp(temp->key,key))
+			return temp;
+		temp = temp->next;
 	}
 	
 	return NULL;
 }
 
-/*! \brief dump hash table in binary
- *  \param instance hash instance
- * */
 void hash_dump(const struct hash_class * const instance, FILE * f);
 
-/*! \brief load hash-table frome file append to list and insert to table
- *  \param instance hash instance
- *  \param f file loadded
- *  \retval 0==ok,-1==err
- * */
 int hash_load(struct hash_class * const instance, FILE * f);
 

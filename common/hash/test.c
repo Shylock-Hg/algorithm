@@ -32,10 +32,13 @@ int main(int argc, char * argv[]){
 		}else{
 			printf("[err]:lookup fail!\n");
 		}
+
+		printf("[info]:please input key string to delete :\n");
+		scanf("%s",key);
+		hash_delete(instance,key);
 		
-		//hash_pop(&instance);
-		hash_release(instance);
-		instance = NULL;
+		//hash_release(instance);
+		//instance = NULL;
 	}
 }
 

@@ -50,8 +50,14 @@ void hash_release(struct hash_class * instance);
  *  \param key keywords string 
  *  \param value 
  * */
-void hash_insert(const struct hash_class * const instance , const char * key, const void * value,
+void hash_insert(const struct hash_class * const instance, const char * key, const void * value,
 		size_t value_size);
+
+/*  \brief delete item by key string
+ *  \param instance hash class object instance
+ *  \parma key key string to delete
+ * */
+void hash_delete(const struct hash_class * const instance, const char * key);
 
 /*! \brief pop hash from lish and delete from table
  *  \param instance hash instance
