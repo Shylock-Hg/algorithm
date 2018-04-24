@@ -13,14 +13,14 @@
 int main(int argc, char * argv[]){
 	char key[200] = {0};
 	char value[200] = {0};
-	struct hash_class instance = hash_new(HASH_TAB_SIZE);
+	struct hash_class * instance = hash_new(HASH_TAB_SIZE);
 
 	for(int i=0; i<5; i++){
 		printf("[info]:please input key string :\n");
 		scanf("%s",key);
 		printf("[info]:please input value string :\n");
 		scanf("%s",value);
-		hash_push(&instance,key,value,strlen(value)+1);
+		hash_insert(instance,key,value,strlen(value)+1);
 	}
 
 	while(1){
@@ -34,7 +34,8 @@ int main(int argc, char * argv[]){
 		}
 		
 		//hash_pop(&instance);
-		hash_release(&instance);
+		hash_release(instance);
+		instance = NULL;
 	}
 }
 

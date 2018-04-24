@@ -18,7 +18,7 @@
  *  \retval integer hashed
  *  \note $hashval(t) = [c(t) + 31 * hashval(t-1)] % HASH_TAB_SIZE$
  * */
-uintptr_t hash(const char * str, const size_t HASH_TAB_SIZE){
+static uintptr_t hash(const char * str, const size_t HASH_TAB_SIZE){
 	uintptr_t hashval = 0;
 
 	while('\0' != *str){
@@ -46,12 +46,13 @@ typedef struct hash_class {
  *  \param HASH_TAB_SIZE hash table count
  *  \retval hash instance
  * */
-struct hash_class hash_new(const size_t HASH_TAB_SIZE){
-	struct hash_class instance = {0};
+struct hash_class * hash_new(const size_t HASH_TAB_SIZE){
+	//< create hash instance
+	struct hash_class * instance = malloc(sizeof(struct hash_class));
 
 	//instance.list = NULL;  //!< list head
-	instance.array = calloc(HASH_TAB_SIZE,sizeof(struct hash *));  //!< array head
-	instance.hash_tab_size = HASH_TAB_SIZE;
+	instance->array = calloc(HASH_TAB_SIZE,sizeof(struct hash *));  //!< array head
+	instance->hash_tab_size = HASH_TAB_SIZE;
 
 	return instance;
 }
@@ -60,6 +61,8 @@ struct hash_class hash_new(const size_t HASH_TAB_SIZE){
  *  \param instance hash instance
  * */
 void hash_release(struct hash_class * instance){
+	if(NULL == instance)
+		return;
 	//!< free list
 	/*
 	while(NULL != instance->list){
@@ -91,6 +94,9 @@ void hash_release(struct hash_class * instance){
 
 	//< reset hash table size
 	instance->hash_tab_size = 0;
+
+	//< free instance
+	free(instance);
 }
 
 /*! \brief append a new hash to list and insert to table
@@ -98,8 +104,10 @@ void hash_release(struct hash_class * instance){
  *  \param key keywords string 
  *  \param value 
  * */
-void hash_push(struct hash_class * instance , const char * key, const void * value,
+void hash_insert(const struct hash_class * const instance , const char * key, const void * value,
 		const size_t value_size){
+	if(NULL == instance)
+		return;
 	//< find hash table index
 	uintptr_t index = hash(key,instance->hash_tab_size);
 
@@ -194,16 +202,16 @@ void hash_pop(struct hash_class * instance){
  *  \param key keywords string
  *  \retval lookuped hash pointer , NULL for don't lookup 
  * */
-struct hash * hash_lookup(struct hash_class instance, const char * key){
-	if(NULL == instance.array)
+struct hash * hash_lookup(const struct hash_class * const instance, const char * key){
+	if(NULL == instance || NULL == instance->array)
 		return NULL;
 
-	uintptr_t index = hash(key,instance.hash_tab_size);
+	uintptr_t index = hash(key,instance->hash_tab_size);
 
-	while(NULL != instance.array[index]){
-		if(0 == strcmp(instance.array[index]->key,key))
-			return instance.array[index];
-		instance.array[index] = instance.array[index]->next;
+	while(NULL != instance->array[index]){
+		if(0 == strcmp(instance->array[index]->key,key))
+			return instance->array[index];
+		instance->array[index] = instance->array[index]->next;
 	}
 	
 	return NULL;
@@ -212,12 +220,12 @@ struct hash * hash_lookup(struct hash_class instance, const char * key){
 /*! \brief dump hash table in binary
  *  \param instance hash instance
  * */
-void hash_dump(struct hash_class instance, FILE * f);
+void hash_dump(const struct hash_class * const instance, FILE * f);
 
 /*! \brief load hash-table frome file append to list and insert to table
  *  \param instance hash instance
  *  \param f file loadded
  *  \retval 0==ok,-1==err
  * */
-int hash_load(struct hash_class instance, FILE * f);
+int hash_load(struct hash_class * const instance, FILE * f);
 

@@ -32,13 +32,13 @@ typedef struct hash_class {
  *  \param HASH_TAB_SIZE hash table count
  *  \retval hashed integer value
  * */
-uintptr_t hash(const char * str, const size_t HASH_TAB_SIZE);
+//uintptr_t hash(const char * str, const size_t HASH_TAB_SIZE);
 
 /*! \brief create hash-list and hash-table
  *  \param HASH_TAB_SIZE hash table count
  *  \retval hash instance
  * */
-struct hash_class hash_new(const size_t HASH_TAB_SIZE);
+struct hash_class * hash_new(const size_t HASH_TAB_SIZE);
 
 /*! \brief release hash-list and hash-table
  *  \param instance hash instance
@@ -50,7 +50,7 @@ void hash_release(struct hash_class * instance);
  *  \param key keywords string 
  *  \param value 
  * */
-void hash_push(struct hash_class * instance , const char * key, const void * value,
+void hash_insert(const struct hash_class * const instance , const char * key, const void * value,
 		size_t value_size);
 
 /*! \brief pop hash from lish and delete from table
@@ -63,19 +63,19 @@ void hash_push(struct hash_class * instance , const char * key, const void * val
  *  \param key keywords string
  *  \retval lookuped hash pointer , NULL for not lookup
  * */
-struct hash * hash_lookup(struct hash_class instance, const char * key);
+struct hash * hash_lookup(const struct hash_class * const instance, const char * key);
 
 /*! \brief printf hash-table to c-array text in file
  *  \param instance hash instance
  * */
-void hash_dump(struct hash_class instance, FILE * f);
+void hash_dump(const struct hash_class * const instance, FILE * f);
 
 /*! \brief load hash-table frome file append to list and insert to table
  *  \param instance hash instance
  *  \param f file loadded
  *  \retval 0==ok,-1==err
  * */
-int hash_load(struct hash_class instance, FILE * f);
+int hash_load(struct hash_class * const instance, FILE * f);
 
 #ifdef __cplusplus
 	}
