@@ -5,6 +5,8 @@
 	extern "C" {
 #endif
 
+#include <stddef.h>
+
 void swap_item(int * a, int * b);
 
 typedef struct array {
