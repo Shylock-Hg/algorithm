@@ -6,6 +6,14 @@
 #endif
 
 #include <stddef.h>
+#include <stdio.h>
+
+#define println_array(array)  do{\
+		for(size_t _i = 0; _i < array.len; _i++){\
+			printf("%d,",array.value[_i]);\
+		}\
+		printf("\n");\
+	}while(0);
 
 void swap_item(int * a, int * b);
 
