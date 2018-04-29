@@ -1,27 +1,40 @@
-CC = gcc
 CFLAGS = -std=c99 -Wall -g
 
 DIR_BUILD = ./build
 
-DIR_SOURCE = .
+PPFLAGS = -MT $@ -MMD -MP -MF $(DIR_BUILD)/$*.d
 
-C_SOURCE = $(wildcard *.c)
+SOURCES = $(wildcard *.c)
 
-OBJECTS = $(addprefix $(DIR_BUILD)/, $(patsubst %.c, %.o, $(C_SOURCE)))
+OBJS = $(addprefix $(DIR_BUILD)/, $(patsubst %.c, %.o, $(notdir $(SOURCES))))
 
-#OBJECTS = $(DIR_BUILD)/search_linear.o $(DIR_BUILD)/test.o
+TARGET = test
 
-all : $(DIR_BUILD)/test
+DEPFILES = $(patsubst %.o, %.d, $(OBJS))
 
-$(DIR_BUILD)/test : $(OBJECTS) output
-	$(CC) $(CFLAGS) -o $@ $(OBJECTS)
+# core header
+#vpath %.h ../../inc/core
+#vpath %.h ../../inc/toolkit
 
-$(DIR_BUILD)/%.o : %.c output
-	$(CC) $(CFLAGS) -c $< -o $@
+.PHONY : all output clean
+all : $(DIR_BUILD)/$(TARGET)
 
-output :
-	mkdir -p ./build
+$(DIR_BUILD)/$(TARGET) : $(OBJS) output
+	cc $(CFLAGS) -o $@ $(OBJS)
 
-clean : $(DIR_BUILD)
+$(DIR_BUILD)/%.o : %.c $(DIR_BUILD)/%.d output
+	cc $(PPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(DIR_BUILD)/%.d : ;
+.PRECIOUS : $(DIR_BUILD)/%.d
+
+#create build directory
+output : 
+	mkdir -p $(DIR_BUILD)
+
+#clean outputs
+clean : 
 	rm -rf $(DIR_BUILD)
+
+-include $(DEPFILES)
 
