@@ -165,9 +165,9 @@ void hash_delete(const struct hash_class * const instance, const char * key){
 	while(NULL != temp){
 		if(0 == strcmp(temp->key,key)){
 			printf("[info]:delete key `%s`\n",temp->key);
-			if(instance->array[index] == temp){  //!< head
+			if(instance->array[index] == temp){  //!< head pointer
 				instance->array[index] = temp->next;
-			}else{
+			}else{  //!< not head pointer
 				pre->next = temp->next;
 			}
 
@@ -179,6 +179,7 @@ void hash_delete(const struct hash_class * const instance, const char * key){
 		pre  = temp;
 		temp = temp->next;
 	}
+	printf("[warn]:not exist key `%s`!\n",key);
 }
 
 /*
