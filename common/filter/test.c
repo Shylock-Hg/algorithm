@@ -5,12 +5,14 @@
  * */
 
 #include "filter_limit.h"
+#include "filter_median.h"
 
 int buf[] = {2,5,2,8,-1,3,5,2,6,99,2,5,7,3,5,0,4,3,5,8};
 
 int main(int argc, char * argv[]){
-	array_t array = {buf,sizeof(buf)/sizeof(buf+0)};
-	filter_limit(array,3);
+	array_t array = {buf,sizeof(buf)/sizeof(buf[0])};
+	//filter_limit(array,3);
+	filter_median(array,0,1);
 	println_array(array);
 
 	return 0;

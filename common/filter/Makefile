@@ -19,8 +19,9 @@ DEPFILES = $(patsubst %.o, %.d, $(OBJS))
 .PHONY : all output clean
 all : $(DIR_BUILD)/$(TARGET)
 
-$(DIR_BUILD)/$(TARGET) : $(OBJS) output
-	cc $(CFLAGS) -o $@ $(OBJS)
+$(DIR_BUILD)/$(TARGET) : $(OBJS) ../sorting/build/sort_insert.o \
+	../sorting/build/sort_common.o output
+	cc $(CFLAGS) -o $@ $(OBJS) ../sorting/build/sort_insert.o ../sorting/build/sort_common.o
 
 $(DIR_BUILD)/%.o : %.c $(DIR_BUILD)/%.d output
 	cc $(PPFLAGS) $(CFLAGS) -c $< -o $@
