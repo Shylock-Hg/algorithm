@@ -18,6 +18,12 @@
 /*  \brief simple implement of limit filter algorithm
  *  \param array array to filter
  *  \param limit maximum of increment
+ *  \note $ f(t) = 
+ *               \begin{case}
+ *               f(t), & \test{if $f(t)-f(t-1) < limit $  \\
+ *               f(t-1), & \test{others}
+ *               \end{case}
+ *        $
  * */
 void filter_limit(array_t array, uint32_t limit);
 
