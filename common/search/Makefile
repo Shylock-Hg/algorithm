@@ -4,6 +4,8 @@ DIR_BUILD = ./build
 
 PPFLAGS = -MT $@ -MMD -MP -MF $(DIR_BUILD)/$*.d
 
+LFLAGS = -lm
+
 SOURCES = $(wildcard *.c)
 
 OBJS = $(addprefix $(DIR_BUILD)/, $(patsubst %.c, %.o, $(notdir $(SOURCES))))
@@ -20,10 +22,10 @@ DEPFILES = $(patsubst %.o, %.d, $(OBJS))
 all : $(DIR_BUILD)/$(TARGET)
 
 $(DIR_BUILD)/$(TARGET) : $(OBJS) output
-	cc $(CFLAGS) -o $@ $(OBJS)
+	cc $(CFLAGS) $(LFLAGS) -o $@ $(OBJS)
 
 $(DIR_BUILD)/%.o : %.c $(DIR_BUILD)/%.d output
-	cc $(PPFLAGS) $(CFLAGS) -c $< -o $@
+	cc $(PPFLAGS) $(LFLAGS) $(CFLAGS) -c $< -o $@
 
 $(DIR_BUILD)/%.d : ;
 .PRECIOUS : $(DIR_BUILD)/%.d
