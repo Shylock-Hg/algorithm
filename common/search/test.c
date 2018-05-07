@@ -8,6 +8,7 @@
 
 #include "search_linear.h"
 #include "search_binary.h"
+#include "search_jump.h"
 
 int buf0[] = {-1,22,33,22,33,446,4463,22222,2354,2345,23,2342,2342,24532,-1,-444,32,-1,-324,111,234,-444};
 
@@ -26,6 +27,13 @@ int main(int argc, char * argv[]){
 	}
 
 	ret = search_binary(array_sorted.value,0,array_sorted.len-1,5);
+	if(-1 == ret){
+		printf("[warn]:not find!\n");
+	}else{
+		printf("[info]:find in index `%d` \n",ret);
+	}
+
+	ret = search_jump(array_sorted,5);
 	if(-1 == ret){
 		printf("[warn]:not find!\n");
 	}else{
