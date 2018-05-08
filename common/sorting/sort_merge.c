@@ -10,49 +10,49 @@
 #include <stdio.h>
 #include "sort_common.h"
 
-static void merge(array_t array, size_t i_start, size_t i_mid, size_t i_end){
+static void merge(array_t array, size_t lo, size_t mid, size_t hi){
 	static int * temp = NULL;
 	if(NULL == temp){  //!< alloc once
 		temp = calloc(array.len,sizeof(int));
 	}
 
-	size_t i_left = i_start;
-	size_t i_right = i_mid;
-	size_t i_temp = i_start;
+	size_t i_lo = lo;
+	size_t i_hi = mid;
+	size_t i_it = lo;
 
 	//< merge and sort two sub-array to temp
-	//< sub[i_start,i_mid), sub[i_mid,i_end) --> partion[i_start,i_end)
-	while(i_left < i_mid || i_right < i_end){  
-		if(i_left == i_mid){
-			temp[i_temp] = array.value[i_right];
-			i_right++;
-		}else if(i_right == i_end){
-			temp[i_temp] = array.value[i_left];
-			i_left++;
-		}else if(array.value[i_left] < array.value[i_right]){
-			temp[i_temp] = array.value[i_left];
-			i_left++;
+	//< sub[lo,mid), sub[mid,hi) --> partion[lo,hi)
+	while(i_lo < mid || i_hi < hi){  
+		if(i_lo == mid){
+			temp[i_it] = array.value[i_hi];
+			i_hi++;
+		}else if(i_hi == hi){
+			temp[i_it] = array.value[i_lo];
+			i_lo++;
+		}else if(array.value[i_lo] < array.value[i_hi]){
+			temp[i_it] = array.value[i_lo];
+			i_lo++;
 		}else{
-			temp[i_temp] = array.value[i_right];
-			i_right++;
+			temp[i_it] = array.value[i_hi];
+			i_hi++;
 		}
-		i_temp++;
+		i_it++;
 	}
 
-	//< update origin partion-array[i_start,i_end)
-	for(i_temp=i_start; i_temp<i_end; i_temp++){  
-		array.value[i_temp] = temp[i_temp];
+	//< update origin partion-array[lo,hi)
+	for(i_it=lo; i_it<hi; i_it++){  
+		array.value[i_it] = temp[i_it];
 	}
-	//memcpy(array.value+i_start,temp+i_start,i_end-i_start); error for bytes order
+	//memcpy(array.value+lo,temp+lo,hi-lo); error for bytes order
 }
 
-static void sort_merge_origin(array_t array, size_t i_start, size_t i_end){
-	if(i_start < i_end-1){  //!< divide to one element
-		int i_mid = i_start + (i_end - i_start)/2;  //!< divide array
-		sort_merge_origin(array,i_start,i_mid);
-		sort_merge_origin(array,i_mid,i_end);
+static void sort_merge_origin(array_t array, size_t lo, size_t hi){
+	if(lo < hi-1){  //!< divide to one element
+		int mid = lo + (hi - lo)/2;  //!< divide array
+		sort_merge_origin(array,lo,mid);
+		sort_merge_origin(array,mid,hi);
 
-		merge(array,i_start,i_mid,i_end);
+		merge(array,lo,mid,hi);
 	}
 }
 
