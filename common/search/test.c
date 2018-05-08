@@ -39,6 +39,13 @@ int main(int argc, char * argv[]){
 	}else{
 		printf("[info]:find in index `%d` \n",ret);
 	}
+
+	ret = search_jump(array_sorted,5);
+	if(-1 == ret){
+		printf("[warn]:not find!\n");
+	}else{
+		printf("[info]:find in index `%d` \n",ret);
+	}
 	
 	return 0;
 }
