@@ -6,21 +6,21 @@
 
 #include <stddef.h>
 
-int search_binary(int array[], size_t start, size_t end, int x){
-	if(start == end){
-		if(array[start] == x)
-			return start;
+int search_binary(int array[], size_t lo, size_t hi, int x){
+	if(lo == hi){
+		if(array[lo] == x)
+			return lo;
 		else
 			return -1;
 	}
 
-	size_t mid = (end-start)/2+start;
+	size_t mid = (hi-lo)/2+lo;
 
-	//< ascending
+	//< aschiing
 	if(x <= array[mid]){
-		return search_binary(array,start,mid,x);
+		return search_binary(array,lo,mid,x);
 	}else{
-		return search_binary(array,mid+1,end,x);
+		return search_binary(array,mid+1,hi,x);
 	}
 }
 

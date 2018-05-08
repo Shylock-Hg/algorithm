@@ -20,7 +20,7 @@
  *  \param x value to search
  *  \retval index of searched item,-1 for not find
  * */
-int search_binary(int array[], size_t start, size_t end, int x);
+int search_binary(int array[], size_t lo, size_t hi, int x);
 
 #ifdef __cplusplus
 	}
