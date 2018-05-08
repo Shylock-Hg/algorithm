@@ -13,20 +13,20 @@
  * */
 static void heapify(array_t array,int root,int len){
 	int largest = root;
-	int l = (root<<2) + 1;  //2*root + 1;
-	int r = (root<<2) + 2;  //2*root + 2;
+	int lc = 2*root+1;  //(root<<2) + 1;  //2*root + 1;
+	int rc = 2*root+2;  //(root<<2) + 2;  //2*root + 2;
 
 	//< compare left child
-	if(l<len && array.value[l]>array.value[largest])
-		largest = l;
+	if(lc<len && array.value[lc]>array.value[largest])
+		largest = lc;
 	//< compare right child
-	if(r<len && array.value[r]>array.value[largest])
-		largest = r;
+	if(rc<len && array.value[rc]>array.value[largest])
+		largest = rc;
 
 	//< if largest is not the root
 	if(largest != root){
 		swap_item(array.value+root,array.value+largest);
-		heapify(array,len,largest);
+		heapify(array,largest,len);
 	}
 }
 
