@@ -13,6 +13,12 @@ int main(int argc, char * argv[]){
 	struct queue_class * instance = queue_class_new(sizeof(int));
 	for(int i=0; i<15; i++){
 		queue_class_enqueue(instance, &i);
+		struct queue * element = queue_class_dequeue(instance);
+		//printf("%p,", element);
+		if(NULL != element){
+			printf("%d,", *((int*)element->value));
+			queue_class_element_release(instance, element);
+		}
 	}
 
 	//printf("%p,%p\n", instance->_head, instance->_tail);
