@@ -51,10 +51,10 @@ void construct_tree(struct tree_class * instance){
 	root->children[0]->children[1] = tree_class_node_new(instance, &value);
 	value++;
 
-	root->children[1]->children[0] = tree_class_node_new(instance, &value);
-	value++;
+	//root->children[1]->children[0] = tree_class_node_new(instance, &value);
+	//value++;
 
-	root->children[1]->children[1] = tree_class_node_new(instance, &value);
+	//root->children[1]->children[1] = tree_class_node_new(instance, &value);
 }
 
 int main(int argc, char * argv[]){
@@ -85,7 +85,9 @@ int main(int argc, char * argv[]){
 
 	printf("height of tree:%ld\n",tree_class_height(instance));
 
+	printf("release tree by :");
 	tree_class_release(instance);
 
 	return 0;
 }
+

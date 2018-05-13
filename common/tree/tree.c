@@ -9,7 +9,7 @@
 #include <assert.h>
 
 #include "tree.h"
-
+#include "queue.h"
 
 /*
 typedef struct tree {
@@ -241,16 +241,56 @@ static void _tree_class_traversal_bfs(const struct tree_class * instance, const 
 	}
 }
 
-void tree_class_traversal_bfs(const struct tree_class * instance, const uintptr_t level){
-	assert(NULL != instance);
+/*! \brief macro select breath first traversal implement
+ *         0 for multi-dfs by level , 1 for queue implement
+ * */
+#define BFS 1
 
-	if(NULL == instance)
+void tree_class_traversal_bfs(const struct tree_class * instance, const uintptr_t level){
+	assert(NULL != instance && NULL != instance->root);
+
+	if(NULL == instance || NULL == instance->root)
 		return;
+
+#if (0 == BFS)
 
 	uintptr_t height = tree_class_height(instance);
 
 	for(size_t i=level; i<height; i++){
 		_tree_class_traversal_bfs(instance, instance->root, i);
 	}
+
+#elif (1 ==BFS)  //!< can't specify start level
+
+	//< create and initialize a queue
+	struct queue_class * queue = queue_class_new(sizeof(struct tree *));
+	queue_class_enqueue(queue, &(instance->root));
+
+	while(! queue_class_is_empty(queue)){
+		//< show time for current tree node at head of queue
+		struct queue * element = queue_class_dequeue(queue);
+		struct tree * node = (struct tree *)(*(struct tree **)(element->value));
+		instance->interpreter(node->value);
+
+		//< enqueue childen(if any ...)
+		for(size_t i=0; i<instance->count_children; i++){
+			if(NULL != node->children[i])
+				queue_class_enqueue(queue, &(node->children[i]));
+		}
+
+		//< free element
+		queue_class_element_release(queue, element);
+	}
+
+	//< free queue
+	queue_class_release(queue);
+
+#else 
+
+#error "No BFS implement selected!\n"
+
+#endif
+
 }
+
 
