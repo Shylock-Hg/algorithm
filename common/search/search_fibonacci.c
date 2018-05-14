@@ -3,12 +3,17 @@
  *  \date 2018-05-08
  *  \email tcath2s@gmail.com
  * */
+#include <assert.h>
 
 #include "../sorting/sort_common.h"
 
 #define min(a,b) (a<b ? a : b)
 
 int search_fibonacci(array_t array, int x){
+	assert(NULL != array.value && 0 != array.len);
+	if(NULL == array.value || 0 == array.len)
+		return -1;
+
 	//< initialize fibonacci 
 	int fibMMm2 = 0;  //!< (m-2)'th fibonacci No.
 	int fibMMm1 = 1;  //!< (m-1)'th fibonacci No.

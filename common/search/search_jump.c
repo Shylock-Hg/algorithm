@@ -6,12 +6,17 @@
 
 #include <stddef.h>
 #include <math.h>
+#include <assert.h>
 
 #include "../sorting/sort_common.h"
 
 #define min(a,b) (a<b ? a : b)
 
 int search_jump(array_t array, int x){
+	assert(NULL != array.value && 0 != array.len);
+	if(NULL == array.value || 0 == array.len)
+		return -1;
+
 	//< best size of block to jump
 	const size_t step = sqrt(array.len);
 

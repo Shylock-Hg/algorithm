@@ -5,10 +5,15 @@
  * */
 
 #include <stddef.h>
+#include <assert.h>
 
 #include "../sorting/sort_common.h"
 
 int search_interpolation(array_t array, int x){
+	assert(NULL != array.value && 0 != array.len);
+	if(NULL == array.value || 0 == array.len)
+		return -1;
+
 	//< initialize iterator
 	size_t lo = 0, hi = (array.len-1);
 
