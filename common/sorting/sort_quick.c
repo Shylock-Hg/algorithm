@@ -6,6 +6,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "sort_common.h"
 
@@ -35,6 +36,10 @@ static void sort_quick_origin(array_t array, int lo, int hi){
 
 //  divide array by pivot
 void sort_quick(array_t array){
+	assert(NULL != array.value && 0 != array.len);
+	if(NULL == array.value || 0 == array.len)
+		return ;
+
 	sort_quick_origin(array,0,array.len-1);
 }
 

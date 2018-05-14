@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <assert.h>
 
 #include "sort_common.h"
 
@@ -8,6 +9,10 @@
  *  \note nonstable
  * */
 void sort_select(array_t array){
+	assert(NULL != array.value && 0!= array.len);
+	if(NULL == array.value || 0 == array.len)
+		return ;
+	
 	size_t i,j;   
 	size_t jMin;
 

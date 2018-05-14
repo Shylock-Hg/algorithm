@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
+
 #include "sort_common.h"
 
 static void merge(array_t array, size_t lo, size_t mid, size_t hi){
@@ -57,6 +59,10 @@ static void sort_merge_origin(array_t array, size_t lo, size_t hi){
 }
 
 void sort_merge(array_t array){
+	assert(NULL != array.value && 0 != array.len);
+	if(NULL == array.value || 0 == array.len)
+		return ;
+
 	sort_merge_origin(array,0,array.len);
 }
 

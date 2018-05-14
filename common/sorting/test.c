@@ -17,9 +17,9 @@ int main(int argc, char * argv[]){
 	
 	//sort_insert(array);
 	//sort_select(array);
-	//sort_merge(array);
+	sort_merge(array);
 	//sort_quick(array);
-	sort_heap(array);
+	//sort_heap(array);
 	
 	printf("sorted:\n");
 	println_array(array);

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stddef.h>
+#include <assert.h>
 
 #include "sort_common.h"
 
@@ -9,6 +10,10 @@
  *  \note stable
  * */
 void sort_insert(array_t array){
+	assert(NULL != array.value && 0 != array.len);
+	if(NULL == array.value || 0 == array.len)
+		return ;
+
 	size_t j = 0;
 	for(size_t i = 1; i < array.len; i++){ //!< i-->[1,len-1]
 		j = i;

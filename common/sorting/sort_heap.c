@@ -4,6 +4,8 @@
  *  \email tcath2s@gmail.com
  * */
 
+#include <assert.h>
+
 #include "sort_common.h"
 
 /*  \brief to heapify a subtree to max(min) heap
@@ -31,6 +33,10 @@ static void heapify(array_t array,int root,int len){
 }
 
 void sort_heap(array_t array){
+	assert(NULL != array.value && 0 != array.len);
+	if(NULL == array.value || 0 == array.len)
+		return ;
+
 	//< build heap (apply headify to last nonleaf node)
 	for(int i=array.len/2-1; i>=0; i--){
 		heapify(array,i,array.len);  //!< heapify heap[i,array.len)
