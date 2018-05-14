@@ -10,6 +10,7 @@
 
 #include "tree.h"
 #include "queue.h"
+#include "stack.h"
 
 /*
 typedef struct tree {
@@ -242,9 +243,11 @@ static void _tree_class_traversal_bfs(const struct tree_class * instance, const 
 }
 
 /*! \brief macro select breath first traversal implement
- *         0 for multi-dfs by level , 1 for queue implement
+ *         0 for multi-dfs by level , 
+ *         1 for queue implement    ,
+ *         2 for stack implement
  * */
-#define BFS 1
+#define BFS 2
 
 void tree_class_traversal_bfs(const struct tree_class * instance, const uintptr_t level){
 	assert(NULL != instance && NULL != instance->root);
@@ -284,6 +287,29 @@ void tree_class_traversal_bfs(const struct tree_class * instance, const uintptr_
 
 	//< free queue
 	queue_class_release(queue);
+
+#elif (2 == BFS)
+
+	//< create stack
+	struct stack_class * p_stack = stack_class_new(sizeof(struct stack *));
+	stack_class_push(p_stack, &(instance->root));
+
+	//< breath first traversal by stack
+	while(! stack_class_is_empty(p_stack)){
+		//< show time for node
+		struct stack * element = stack_class_pop(p_stack);
+		struct tree * node = (struct tree *)(*(struct tree **)(element->value));
+		instance->interpreter(node->value);
+
+		//< push children to stack (if any ...)
+		for(size_t i=0; i<instance->count_children; i++){
+			if(NULL != node->children[i])
+				stack_class_push(p_stack, &(node->children[i]));
+		}
+	}
+
+	//< free stack
+	stack_class_release(p_stack);
 
 #else 
 
