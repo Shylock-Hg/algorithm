@@ -247,7 +247,7 @@ static void _tree_class_traversal_bfs(const struct tree_class * instance, const 
  *         1 for queue implement    ,
  *         2 for stack implement
  * */
-#define BFS 2
+#define BFS 1
 
 void tree_class_traversal_bfs(const struct tree_class * instance, const uintptr_t level){
 	assert(NULL != instance && NULL != instance->root);
