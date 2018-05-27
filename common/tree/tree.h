@@ -13,6 +13,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 typedef struct tree {
 	void * value;  //!< pointer to value
@@ -58,6 +59,12 @@ struct tree * tree_class_node_new(const struct tree_class * instance, const void
  *   \retval max height of tree
  * */
 uintptr_t tree_class_height(const struct tree_class * instance);
+
+/*! \brief check is a tree balanced
+ *  \param instance instance of tree
+ *  \retval bool , true for balanced tree, false for not 
+ * */
+bool tree_class_is_balanced(const struct tree_class * instance);
 
 /*  \brief depth first traversal tree by order
  *  \param instance pointer to tree instance

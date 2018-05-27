@@ -21,6 +21,7 @@ void interpreter(void * value){
  *  \param count of tree nodes
  *  \note only for int type value (this implement)
  * */
+/*
 void construct_tree(struct tree_class * instance, const int count){
 	assert(NULL != instance && NULL == instance->root);
 	if(NULL == instance || NULL != instance->root)
@@ -52,8 +53,8 @@ void construct_tree(struct tree_class * instance, const int count){
 
 	//printf("\n");
 }
+*/
 
-/*
 void construct_tree(struct tree_class * instance){
 	int value = 0;
 
@@ -74,18 +75,25 @@ void construct_tree(struct tree_class * instance){
 	root->children[0]->children[1] = tree_class_node_new(instance, &value);
 	value++;
 
-	//root->children[1]->children[0] = tree_class_node_new(instance, &value);
-	//value++;
+	root->children[0]->children[0]->children[0] = tree_class_node_new(instance, &value);
+	value++;
 
-	//root->children[1]->children[1] = tree_class_node_new(instance, &value);
+	root->children[0]->children[0]->children[1] = tree_class_node_new(instance, &value);
+	value++;
+
+	/*
+	root->children[1]->children[0] = tree_class_node_new(instance, &value);
+	value++;
+
+	root->children[1]->children[1] = tree_class_node_new(instance, &value);
+	*/
 }
-*/
 
 int main(int argc, char * argv[]){
 	//< initialize tree to binary tree
 	struct tree_class * instance = tree_class_new(sizeof(int), 2, interpreter);
-	//construct_tree(instance);
-	construct_tree(instance, 15);
+	construct_tree(instance);
+	//construct_tree(instance, 15);
 
 	//< traversal tree
 	printf("pre-order dfs:");
@@ -109,6 +117,11 @@ int main(int argc, char * argv[]){
 	printf("\n");
 
 	printf("height of tree:%ld\n",tree_class_height(instance));
+
+	if(tree_class_is_balanced(instance))
+		printf("balanced tree!\n");
+	else 
+		printf("unbalanced tree!\n");
 
 	printf("release tree by :");
 	tree_class_release(instance);

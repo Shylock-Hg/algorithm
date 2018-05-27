@@ -169,6 +169,10 @@ static uintptr_t max(uintptr_t array[], size_t length){
 }
 
 uintptr_t _tree_class_height(const struct tree_class * instance, struct tree * node, uintptr_t height){
+	assert(NULL != instance);
+	if(NULL == instance)
+		return 0;
+
 	if(NULL == node)
 		return height;
 
@@ -190,6 +194,59 @@ uintptr_t tree_class_height(const struct tree_class * instance){
 		return 0;
 
 	return _tree_class_height(instance, instance->root, 0);
+}
+
+/*! \brief check is difference of subtree heights less than 2
+ * */
+static bool _tree_class_check_balanced(uintptr_t * heights, size_t count){
+	assert(NULL != heights);
+	if(NULL == heights)
+		return false;
+
+	for(size_t i=1; i<count; i++){
+		if((heights[0] ^ heights[i]) > 2)
+			return false;
+	}
+
+	return true;
+}
+
+static uintptr_t _tree_class_is_balanced(const struct tree_class * instance, struct tree * node, 
+		uintptr_t height, bool * flag){
+	assert(NULL != instance);
+	if(NULL == instance)
+		return 0;
+
+	if(NULL == node)
+		return height;
+
+	uintptr_t * heights = calloc(sizeof(uintptr_t), instance->count_children);
+
+	for(size_t i=0; i<instance->count_children; i++){
+		heights[i] = _tree_class_is_balanced(instance, node->children[i], height+1, flag);
+	}
+
+	if(! _tree_class_check_balanced(heights, instance->count_children)){
+		*flag = false;
+	}
+
+	uintptr_t maxvalue = max(heights, instance->count_children);
+
+	free(heights);
+	
+	return maxvalue;
+}
+
+bool tree_class_is_balanced(const struct tree_class * instance){
+	assert(NULL != instance);
+	if(NULL == instance)
+		return false;
+
+	bool flag = true;
+
+	_tree_class_is_balanced(instance, instance->root, 0, &flag);
+
+	return flag;
 }
 
 /*

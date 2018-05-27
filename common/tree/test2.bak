@@ -85,6 +85,11 @@ int main(int argc, char * argv[]){
 	tree_class_bin_release(instance);
 	printf("\n");
 
+	if(tree_class_is_balanced(instance))
+		printf("balanced tree!\n");
+	else 
+		printf("unbalanced tree!\n");
+
 	return 0;
 }
 
