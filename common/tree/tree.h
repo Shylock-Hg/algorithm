@@ -52,7 +52,7 @@ struct tree * tree_class_node_new(const struct tree_class * instance, const void
  *  \param instance instance pointer to tree
  *  \param node tree node to release
  * */
-//void tree_class_node_release(struct tree_class * instance, struct tree * node);
+void tree_class_node_release(struct tree * node);
 
 /*!  \brief get max height of tree
  *   \param instance instance of tree

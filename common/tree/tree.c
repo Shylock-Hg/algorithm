@@ -91,8 +91,8 @@ static void tree_release_post(struct tree_class * instance, struct tree * node){
 	*/
 
 	//< show time before death
-	if(NULL != instance->interpreter)
-		instance->interpreter(node->value);
+	//if(NULL != instance->interpreter)
+		//instance->interpreter(node->value);
 
 	//< don't have chilren 
 	free(node->value);
@@ -155,6 +155,14 @@ struct tree * tree_class_node_new(const struct tree_class * instance, const void
 	memcpy(node->value, value, instance->size_value);
 
 	return node;
+}
+
+void tree_class_node_release(struct tree * node){
+	assert(node);
+
+	free(node->children);
+	free(node->value);
+	free(node);
 }
 
 static uintptr_t max(uintptr_t array[], size_t length){
