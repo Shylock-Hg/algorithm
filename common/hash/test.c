@@ -23,7 +23,9 @@ int main(int argc, char * argv[]){
 		hash_insert(instance,key,value,strlen(value)+1);
 	}
 
-	while(1){
+	int i = 4;
+
+	while(i--){
 		printf("[info]:please input key string to lookup :\n");
 		scanf("%s",key);
 		struct hash * item = hash_lookup(instance,key);
@@ -40,5 +42,7 @@ int main(int argc, char * argv[]){
 		//hash_release(instance);
 		//instance = NULL;
 	}
+
+	hash_release(instance);
 }
 
