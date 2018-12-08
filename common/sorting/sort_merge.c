@@ -13,10 +13,7 @@
 #include "sort_common.h"
 
 static void merge(array_t array, size_t lo, size_t mid, size_t hi){
-	static int * temp = NULL;
-	if(NULL == temp){  //!< alloc once
-		temp = calloc(array.len,sizeof(int));
-	}
+        int temp[array.len];
 
 	size_t i_lo = lo;
 	size_t i_hi = mid;
