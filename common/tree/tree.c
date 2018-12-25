@@ -184,17 +184,24 @@ uintptr_t _tree_class_height(const struct tree_class * instance, struct tree * n
 	if(NULL == node)
 		return height;
 
-	uintptr_t * heights = calloc(sizeof(uintptr_t), instance->count_children);
+	// uintptr_t * heights = calloc(sizeof(uintptr_t), instance->count_children);
+        uintptr_t max = 0;
+        uintptr_t child_height = 0;
 
 	for(size_t i=0; i<instance->count_children; i++){
-		heights[i] = _tree_class_height(instance, node->children[i], height+1);
+		// heights[i] = _tree_class_height(instance, node->children[i], height+1);
+                child_height = _tree_class_height(instance, node->children[i], height+1);
+                if (max < child_height) {
+                        max = child_height;
+                }
 	}
 
-	uintptr_t maxvalue = max(heights, instance->count_children);
+	// uintptr_t maxvalue = max(heights, instance->count_children);
 
-	free(heights);
+	// free(heights);
 
-	return maxvalue;
+	// return maxvalue;
+        return max;
 }
 
 uintptr_t tree_class_height(const struct tree_class * instance){
